@@ -4,10 +4,9 @@ A beginner-friendly desktop app that lets anyone create Minecraft resource packs
 
 ## How It Works
 
-1. **Pick what to change** — Replace textures, add custom models, or set up random mob skins from guided wizards.
-2. **Drop in your files** — Browse or drag & drop PNGs, `.jem` models, and more straight from Explorer.
-3. **Choose your edition** — Java, Bedrock, or Both at once.
-4. **Click Generate** — The app creates the full pack with correct file names, folder structure, config files, and everything else.
+1. **Pick what to change — or just drop your files in** — Use the guided wizards or drag & drop PNGs, models, and folders straight from Explorer.
+2. **Choose your edition** — Java, Bedrock, or Both at once.
+3. **Click Generate** — The app creates the full pack with correct file names, folder structure, config files, and everything else.
 
 ## Features
 
