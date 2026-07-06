@@ -13,7 +13,7 @@ A beginner-friendly desktop app that lets anyone create Minecraft resource packs
 ### Core
 - **Java + Bedrock support** — Generate packs for either edition or both simultaneously
 - **Guided wizards** — Step-by-step dialogs for replacing textures, adding models, and setting up random skins
-- **200+ built-in assets** — Blocks, items, entities, armor, GUI, environment, paintings
+- **200+ built-in assets Supported** — Blocks, items, entities, armor, GUI, environment, paintings
 - **Drag & drop** — Drag files straight from Explorer onto the app — textures, models, or entire folders are auto-classified
 - **Built-in Help guide** — "? Help" button with instructions on naming conventions, mod dependencies, and how each feature works
 
