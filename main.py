@@ -9,6 +9,7 @@ Supports textures, custom entity models (CEM/JEM), item models, and more.
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import os
+import re
 import json
 import shutil
 import zipfile
@@ -163,6 +164,23 @@ def _load_version_cache():
         return {k: tuple(v) for k, v in data.items()}
     except Exception:
         return {}
+
+
+def _safe_name(name, replace_spaces=True):
+    """Sanitize a user-supplied string so it can safely be used as a single
+    path component. Removes directory traversal patterns and path separators."""
+    if not isinstance(name, str):
+        name = str(name)
+    name = name.replace("\\", "_").replace("/", "_")
+    while ".." in name:
+        name = name.replace("..", "_")
+    name = name.strip(" \t\r\n.")
+    if replace_spaces:
+        name = name.replace(" ", "_")
+    name = re.sub(r"_+", "_", name)
+    if not name:
+        name = "unnamed"
+    return name
 
 
 # ─── Minecraft asset database ────────────────────────────────────────
@@ -1203,7 +1221,7 @@ class ResourcePackGenerator:
                 messagebox.showwarning("No Files",
                     "Please select your model and texture files.", parent=dlg)
                 return
-            name = entity_name.get().strip()
+            name = _safe_name(entity_name.get().strip(), replace_spaces=True)
             if not name:
                 messagebox.showwarning("No Name",
                     "Please enter a name for the model/entity.", parent=dlg)
@@ -1530,7 +1548,7 @@ class ResourcePackGenerator:
 
         # ── Generate button
         def generate():
-            name = entity_name.get().strip()
+            name = _safe_name(entity_name.get().strip(), replace_spaces=True)
             if not name:
                 messagebox.showwarning("No Entity",
                     "Please select or type an entity name.", parent=dlg)
@@ -1918,7 +1936,7 @@ class ResourcePackGenerator:
 
     def _prepare_pack_folder(self, name, out_dir, suffix=""):
         """Create a clean output folder; returns (folder_name, pack_root)."""
-        folder_name = name.replace(" ", "_") + suffix
+        folder_name = _safe_name(name, replace_spaces=True) + suffix
         pack_root = os.path.join(out_dir, folder_name)
 
         if os.path.exists(pack_root):
@@ -2246,6 +2264,7 @@ class ResourcePackGenerator:
         """Copy all entries into the pack folder, converting paths for Bedrock."""
         copied = 0
         errors = []
+        abs_root = os.path.abspath(pack_root)
         for entry in self.entries:
             src = entry["source_file"]
             java_dest = entry["dest_path"]
@@ -2259,6 +2278,9 @@ class ResourcePackGenerator:
 
             dest = os.path.join(pack_root, dest_rel)
             try:
+                abs_dest = os.path.abspath(dest)
+                if os.path.normcase(os.path.commonpath([abs_dest, abs_root])) != os.path.normcase(abs_root):
+                    raise ValueError("destination escapes pack root")
                 os.makedirs(os.path.dirname(dest), exist_ok=True)
                 shutil.copy2(src, dest)
                 copied += 1

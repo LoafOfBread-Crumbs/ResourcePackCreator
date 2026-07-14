@@ -1,0 +1,4 @@
+# Build-only dependencies for creating ResourcePackCreator.exe with PyInstaller.
+# End users who run from source only need requirements.txt.
+pyinstaller>=6.0,<7.0
+tkinterdnd2==0.3.0

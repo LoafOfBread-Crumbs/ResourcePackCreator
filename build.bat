@@ -4,8 +4,8 @@ echo  Building Resource Pack Creator (.exe)
 echo ========================================
 echo.
 
-:: Install dependencies
-pip install pyinstaller tkinterdnd2
+:: Install / update build dependencies
+pip install -r requirements-build.txt
 
 :: Build the exe
 pyinstaller ResourcePackCreator.spec --clean
